@@ -1,0 +1,33 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>delete</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<style>
+
+    body{
+         font-family:"ＭＳ Ｐゴシック",sans-serif;
+   }
+</style>
+
+<body>
+<!-- confirm_delete.html -->
+<div class="max-w-md mx-auto bg-white shadow-md rounded-lg p-10 m-10">
+    <h2 class="text-1xl font-semibold mb-4">この記事の削除することを確認</h2>
+    <form method="post" class="flex justify-between">
+        {% csrf_token %}
+        <button type="submit" class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded">
+            削除
+        </button>
+        <a href="{% url 'post' post.id %}" class="bg-gray-500 hover:bg-gray-600 text-white py-2 px-4 rounded">
+            キャンセル
+        </a>
+    </form>
+</div>
+
+</body>
+</html>

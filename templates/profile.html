@@ -1,0 +1,135 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="TemplateMo">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<style>
+    body{
+     font-family:"ＭＳ Ｐゴシック",sans-serif;
+}
+</style>
+<body>
+
+<!-- Header -->
+{%include 'header.html'%}
+<section class="grid-system my-10">
+<div class="flex flex-wrap mx-10">
+    {% if user.is_authenticated and user.id == profile.id %}
+    <div class="w-full bg-white rounded-lg  p-10 lg:w-1/3  h-1/3 border ">
+        <img src="{% static 'assets/images/user.png' %}" class="rounded-full h-7 w-7" alt="User Profile Image">
+        <h3 class="text-xl font-bold mb-4">{{ profile.username }}</h3>
+        <p class="text-gray-700">自分の手で何かを作り上げる喜びは、ストレス解消や達成感をもたらし、日常生活に彩りを加えます。</p>
+    </div>
+    <div class="w-full bg-white rounded-lg p-6 lg:w-2/3">
+            <h6 class="mb-5 pb-5 border-b font-bold text-xl py-5 flex justify-between">
+                プロフィール
+                <a href="{% url 'profileedit' user.id %}"
+                   class="text-sm border p-1 hover:bg-red-400 float-right no-underline">
+                    プロフィールを編集
+                </a>
+            </h6>
+            <div class="flex flex-wrap">
+                <div class="w-full md:w-1/2 mb-4">
+                    <p class="mb-2 font-semibold text-gray-800">姓：
+                        <span class="text-gray-500">{{ profile.first_name }}</span>
+                    </p>
+                </div>
+                <div class="w-full md:w-1/2 mb-4">
+                    <p class="mb-2 font-semibold text-gray-800">名：
+                        <span class="text-gray-500">{{ profile.last_name }}</span>
+                    </p>
+                </div>
+                <div class="w-full md:w-1/2 mb-4">
+                    <p class="mb-2 font-semibold text-gray-800">メール：
+                        <span class="text-gray-500">{{ profile.email }}</span>
+                    </p>
+                </div>
+            </div>
+            <p class="text-sm font-bold pt-3 text-gray-800">私の投稿</p>
+            <hr class="my-4">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                {% for post in posts %}
+                {% if post.user_id == profile.id %}
+                <div class="col mb-4">
+                    <img src="{{ media_url }}{{ post.image }}" alt="" class="w-full h-72 object-cover border">
+                    <div class="p-4 shadow">
+                        <a href="{% url 'post' post.id %}" class="font-bold">{{ post.postname }}</h5></a>
+                        <h5 class="text-sm">{{ post.time }}</h5>
+                        <div class="flex justify-end space-x-2 text-sm">
+                            {% if post.user_id == user.id %}
+                            <a href="{% url 'deletepost' post.id %}">
+                                <button class="border p-1 hover:bg-red-400">削除
+                                </button>
+                            </a>
+                            <a href="{% url 'editpost' post.id %}">
+                                <button class="border p-1 hover:bg-blue-400">編集
+                                </button>
+                            </a>
+                            {% endif %}
+                        </div>
+                        <!--                        -->
+                        <div class="flex items-center mt-2">
+                            <span class="text-xs mr-2">#{{ post.category }}</span>
+                            <p class="text-xs mr-2">{{ post.time }}</p>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="red" viewBox="0 0 24 24" stroke-width="1"
+                                 stroke="red" class="h-4 w-4 mr-2">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                      d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"/>
+                            </svg>
+                            <span class="text-xs">{{ post.likes }}</span>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                {% endfor %}
+            </div>
+    </div>
+    {% else %}
+    <div class="bg-white shadow-lg rounded-lg p-6 w-1/4 ml-8 sm:hidden lg:block">
+        <img src="{% static 'assets/images/user.png' %}" class="rounded-full h-7 w-7" alt="User Profile Image">
+        <h3 class="text-xl font-semibold mb-4">{{ profile.username }}</h3>
+        <p class="text-gray-700">This is a card on the right side with some placeholder content. You can add more
+            information or elements here as needed.</p>
+    </div>
+    <div class="bg-white rounded-lg p-6 w-3/4 ml-1">
+        <div class="card-block">
+            <p class="text-sm font-bold pt-3 text-gray-800">{{profile}}の投稿</p>
+            <hr class="my-4">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                {% for post in posts %}
+                {% if post.user_id == profile.id %}
+                <div class="col mb-4">
+                    <img src="{{ media_url }}{{ post.image }}" alt="" class="w-full h-72 object-cover border">
+                    <div class="p-4 shadow">
+                        <a href="{% url 'post' post.id %}" class="font-bold">{{ post.postname }}</h5></a>
+                        <h5 class="text-sm">{{ post.time }}</h5>
+                        <div class="flex items-center mt-2">
+                            <span class="text-xs mr-2">#{{ post.category }}</span>
+                            <p class="text-xs mr-2">{{ post.time }}</p>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="red" viewBox="0 0 24 24" stroke-width="1"
+                                 stroke="red" class="h-4 w-4 mr-2">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                      d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"/>
+                            </svg>
+                            <span class="text-xs">{{ post.likes }}</span>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+</section>
+{% include 'footer.html' %}
+</body>
+
+</html>

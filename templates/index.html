@@ -1,0 +1,301 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="TemplateMo">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<style>
+    body{
+      font-family:"ＭＳ Ｐゴシック",sans-serif;
+}
+
+    .fixed-height {
+    height: 300px;
+    object-fit: cover; }
+</style>
+<body>
+
+
+{%include 'header.html'%}
+<section class="my-10">
+    <div class="container mx-auto w-8/10 px-4">
+        <a href="{% url 'blog' %}" class="text-decoration-none flex items-center mb-2">
+            <h3 class=" text-1xl font-bold">注目記事</h3>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                 stroke="currentColor" class="h-4 w-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5"/>
+            </svg>
+        </a>
+        <div class="flex flex-wrap">
+            <div class="w-full lg:w-9/10 md:w-9/10">
+                <div class="all-blog-posts">
+                    <div class="flex flex-wrap">
+                        {% for post in top_posts|slice:"0:8" %}
+                        <div class="w-full lg:w-1/4 p-2 blog-post">
+                            <img src="{{media_url}}{{post.image}}" alt="" class="img-fluid w-full fixed-height">
+                            <div class="p-2 shadow-sm">
+                                <a href="{% url 'post' post.id %}" class="text-decoration-none text-dark mb-3">
+                                    <h1 class="text-xl">{{post.postname}}</h1>
+                                    <!--              user                      -->
+                                    <div class="flex items-center ">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                             stroke-width="1" stroke="currentColor" class="h-4 w-4 ml-2">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                  d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"/>
+                                        </svg>
+                                        <p class="text-sm ml-1">{{post.user}}</p>
+                                    </div>
+                                    <!--               time                     -->
+                                    <div class="flex items-center ">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                             stroke-width="1" stroke="currentColor" class="h-4 w-4 ml-2">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                  d="M6.75 2.994v2.25m10.5-2.25v2.25m-14.252 13.5V7.491a2.25 2.25 0 0 1 2.25-2.25h13.5a2.25 2.25 0 0 1 2.25 2.25v11.251m-18 0a2.25 2.25 0 0 0 2.25 2.25h13.5a2.25 2.25 0 0 0 2.25-2.25m-18 0v-7.5a2.25 2.25 0 0 1 2.25-2.25h13.5a2.25 2.25 0 0 1 2.25 2.25v7.5m-6.75-6h2.25m-9 2.25h4.5m.002-2.25h.005v.006H12v-.006Zm-.001 4.5h.006v.006h-.006v-.005Zm-2.25.001h.005v.006H9.75v-.006Zm-2.25 0h.005v.005h-.006v-.005Zm6.75-2.247h.005v.005h-.005v-.005Zm0 2.247h.006v.006h-.006v-.006Zm2.25-2.248h.006V15H16.5v-.005Z"/>
+                                        </svg>
+                                        <p class="text-xs ml-1">{{post.time}}</p>
+                                    </div>
+                                </a>
+                                <form method="post" action="{% url 'increaselikes' post.id %}"
+                                      class="flex items-center  mt-1">
+                                    {% csrf_token %}
+                                    <button class="text-sm ml-2" type="submit"
+                                            style="border: none; background: transparent;">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                             stroke-width="1" stroke="currentColor" class="h-4 w-4">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                  d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"/>
+                                        </svg>
+                                    </button>
+                                    <span class="text-xs ml-1">{{post.likes}}</span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                         stroke-width="1" stroke="currentColor" class="h-4 w-4 ml-2">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                              d="M9.568 3H5.25A2.25 2.25 0 0 0 3 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 0 0 5.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 0 0 9.568 3Z"/>
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                              d="M6 6h.008v.008H6V6Z"/>
+                                    </svg>
+                                    <span class="text-xs ml-1">
+                                        {{post.category}}</span>
+                                </form>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container mx-auto w-8/10 mt-4 px-4">
+        <a href="{% url 'blog' %}" class="text-decoration-none flex items-center mb-2">
+            <h3 class=" text-1xl font-bold">最近記事</h3>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                 stroke="currentColor" class="h-4 w-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5"/>
+            </svg>
+        </a>
+        <div class="flex flex-wrap">
+            <div class="w-full lg:w-9/10">
+                <div class="all-blog-posts">
+                    <div class="flex flex-wrap">
+                        {% for post in recent_posts|slice:"0:8" %}
+                        <div class="w-full lg:w-1/4 p-2 blog-post">
+                            <img src="{{media_url}}{{post.image}}" alt="" class="img-fluid w-full fixed-height ">
+                            <div class="p-2 shadow-sm">
+                                <a href="{% url 'post' post.id %}" class="text-decoration-none text-dark mb-3">
+                                    <h1 class="text-xl">{{post.postname}}</h1>
+                                    <!--              user                      -->
+                                    <div class="flex items-center ">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                             stroke-width="1" stroke="currentColor" class="h-4 w-4 ml-2">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                  d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"/>
+                                        </svg>
+                                        <p class="text-sm ml-1">{{post.user}}</p>
+                                    </div>
+                                    <!--               time                     -->
+                                    <div class="flex items-center ">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                             stroke-width="1" stroke="currentColor" class="h-4 w-4 ml-2">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                  d="M6.75 2.994v2.25m10.5-2.25v2.25m-14.252 13.5V7.491a2.25 2.25 0 0 1 2.25-2.25h13.5a2.25 2.25 0 0 1 2.25 2.25v11.251m-18 0a2.25 2.25 0 0 0 2.25 2.25h13.5a2.25 2.25 0 0 0 2.25-2.25m-18 0v-7.5a2.25 2.25 0 0 1 2.25-2.25h13.5a2.25 2.25 0 0 1 2.25 2.25v7.5m-6.75-6h2.25m-9 2.25h4.5m.002-2.25h.005v.006H12v-.006Zm-.001 4.5h.006v.006h-.006v-.005Zm-2.25.001h.005v.006H9.75v-.006Zm-2.25 0h.005v.005h-.006v-.005Zm6.75-2.247h.005v.005h-.005v-.005Zm0 2.247h.006v.006h-.006v-.006Zm2.25-2.248h.006V15H16.5v-.005Z"/>
+                                        </svg>
+                                        <p class="text-xs ml-1">{{post.time}}</p>
+                                    </div>
+                                </a>
+                                <form method="post" action="{% url 'increaselikes' post.id %}"
+                                      class="flex items-center  mt-1">
+                                    {% csrf_token %}
+                                    <button class="text-sm ml-2" type="submit"
+                                            style="border: none; background: transparent;">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                             stroke-width="1" stroke="currentColor" class="h-4 w-4">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                  d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"/>
+                                        </svg>
+                                    </button>
+                                    <span class="text-xs ml-1">{{post.likes}}</span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                         stroke-width="1" stroke="currentColor" class="h-4 w-4 ml-2">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                              d="M9.568 3H5.25A2.25 2.25 0 0 0 3 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 0 0 5.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 0 0 9.568 3Z"/>
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                              d="M6 6h.008v.008H6V6Z"/>
+                                    </svg>
+                                    <span class="text-xs ml-1">
+                                        {{post.category}}</span>
+                                </form>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% for category in categories %}
+    <div class="container mx-auto mt-4 w-8/10 px-4">
+        <h3 class="mb-2  text-1xl font-bold">{{ category }}</h3>
+        <!--        <hr class="mb-4">-->
+        <div class="flex flex-wrap">
+            <div class="w-full lg:w-9/10">
+                <div class="all-blog-posts">
+                    <div class="flex flex-wrap">
+                        {% for post in recent_posts %}
+                        {% if post.category == category %}
+                        <div class="w-full lg:w-1/4 p-2 blog-post">
+                            <img src="{{ media_url }}{{ post.image }}" alt="" class="img-fluid w-full fixed-height">
+                            <div class="p-2 shadow-sm">
+                                <a href="{% url 'post' post.id %}" class="text-decoration-none text-dark mb-3">
+                                    <h1 class="text-xl">{{ post.postname }}</h1>
+                                    <!--              user                      -->
+                                    <div class="flex items-center ">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                             stroke-width="1" stroke="currentColor" class="h-4 w-4 ml-2">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                  d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"/>
+                                        </svg>
+                                        <p class="text-sm ml-1">{{ post.user }}</p>
+                                    </div>
+                                    <!--               time                     -->
+                                    <div class="flex items-center ">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                             stroke-width="1" stroke="currentColor" class="h-4 w-4 ml-2">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                  d="M6.75 2.994v2.25m10.5-2.25v2.25m-14.252 13.5V7.491a2.25 2.25 0 0 1 2.25-2.25h13.5a2.25 2.25 0 0 1 2.25 2.25v11.251m-18 0a2.25 2.25 0 0 0 2.25 2.25h13.5a2.25 2.25 0 0 0 2.25-2.25m-18 0v-7.5a2.25 2.25 0 0 1 2.25-2.25h13.5a2.25 2.25 0 0 1 2.25 2.25v7.5m-6.75-6h2.25m-9 2.25h4.5m.002-2.25h.005v.006H12v-.006Zm-.001 4.5h.006v.006h-.006v-.005Zm-2.25.001h.005v.006H9.75v-.006Zm-2.25 0h.005v.005h-.006v-.005Zm6.75-2.247h.005v.005h-.005v-.005Zm0 2.247h.006v.006h-.006v-.006Zm2.25-2.248h.006V15H16.5v-.005Z"/>
+                                        </svg>
+                                        <p class="text-xs ml-1">{{ post.time }}</p>
+                                    </div>
+                                </a>
+                                <form method="post" action="{% url 'increaselikes' post.id %}"
+                                      class="flex items-center  mt-1">
+                                    {% csrf_token %}
+                                    <button class="text-sm ml-2" type="submit"
+                                            style="border: none; background: transparent;">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                             stroke-width="1" stroke="currentColor" class="h-4 w-4">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                  d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"/>
+                                        </svg>
+                                    </button>
+                                    <span class="text-xs ml-1">{{ post.likes }}</span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                         stroke-width="1" stroke="currentColor" class="h-4 w-4 ml-2">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                              d="M9.568 3H5.25A2.25 2.25 0 0 0 3 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 0 0 5.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 0 0 9.568 3Z"/>
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                              d="M6 6h.008v.008H6V6Z"/>
+                                    </svg>
+                                    <span class="text-xs ml-1">
+                        {{ post.category }}</span>
+                                </form>
+                            </div>
+                        </div>
+                        {% endif %}
+                        {% endfor %}
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</section>
+{% include 'footer.html' %}
+<script>
+</script>
+<script language="text/Javascript">
+    cleared[0] = cleared[1] = cleared[2] = 0; //set a cleared flag for each field
+    function clearField(t) {                   //declaring the array outside of the
+      if (!cleared[t.id]) {                      // function makes it static and global
+        cleared[t.id] = 1;  // you could use true and false, but that's more typing
+        t.value = '';         // with more chance of typos
+        t.style.color = '#fff';
+      }
+    }
+</script>
+
+</body>
+<!--  <div class="container mt-5 carousel">-->
+<!--    <div id="carouselExampleCaptions" class="carousel slide">-->
+<!--      <div class="carousel-indicators">-->
+<!--        <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active"-->
+<!--          aria-current="true" aria-label="Slide 1"></button>-->
+<!--        <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1"-->
+<!--          aria-label="Slide 2"></button>-->
+<!--        <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2"-->
+<!--          aria-label="Slide 3"></button>-->
+<!--        <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="3"-->
+<!--          aria-label="Slide 4"></button>-->
+<!--        <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="4"-->
+<!--          aria-label="Slide 5"></button>-->
+<!--      </div>-->
+<!--      <div class="carousel-inner">-->
+<!--        <div class="carousel-item active">-->
+<!--          <img src="{% static 'assets/images/nature.jpg' %}" alt="image1">-->
+<!--          <div class="carousel-caption ">-->
+<!--            <h1>NATURE</h1>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--        <div class="carousel-item">-->
+<!--          <img src="{% static 'assets/images/travel.jpg' %}" alt="image2">-->
+<!--          <div class="carousel-caption d-none d-md-block">-->
+<!--            <h1>TRAVEL</h1>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--        <div class="carousel-item">-->
+<!--          <img src="{% static 'assets/images/education.jpg' %}" alt="image3">-->
+<!--          <div class="carousel-caption d-none d-md-block">-->
+<!--            <h1>EDUCATION</h1>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--        <div class="carousel-item">-->
+<!--          <img src="{% static 'assets/images/tech.jpg' %}" alt="image4">-->
+<!--          <div class="carousel-caption d-none d-md-block">-->
+<!--            <h1>TECHNOLOGY</h1>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--        <div class="carousel-item">-->
+<!--          <img src="{% static 'assets/images/ai.jpg' %}" alt="image5">-->
+<!--          <div class="carousel-caption d-none d-md-block">-->
+<!--            <h1>ARTIFICIAL INTELLIGENCE</h1>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions"-->
+<!--        data-bs-slide="prev">-->
+<!--        <span class="carousel-control-prev-icon" aria-hidden="true"></span>-->
+<!--        <span class="visually-hidden">Previous</span>-->
+<!--      </button>-->
+<!--      <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions"-->
+<!--        data-bs-slide="next">-->
+<!--        <span class="carousel-control-next-icon" aria-hidden="true"></span>-->
+<!--        <span class="visually-hidden">Next</span>-->
+<!--      </button>-->
+<!--    </div>-->
+<!--  </div>-->
+</html>

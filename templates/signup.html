@@ -1,0 +1,52 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <title>新規登録</title>
+</head>
+
+<body>
+    <div class="container mx-auto flex justify-center items-center h-screen">
+        <form action="{% url 'signup' %}" class="p-6 shadow-lg rounded-lg bg-white w-full max-w-md" method="post">
+            {% csrf_token %}
+            <h3 class="text-2xl font-bold mb-4 text-center">会員登録</h3>
+            <br>
+            {% for message in messages %}
+                <p class="text-red-500 text-center">{{ message }}</p>
+            {% endfor %}
+            <label for="username" class="form-label block mb-2">ユーザ名</label>
+            <div class="input-group mt-1 flex items-center">
+                <input type="text" class="form-control border flex-1 p-2 text-gray-900" name="username" required>
+            </div>
+            <label for="email" class="form-label block mt-3 mb-2">メールアドレス</label>
+            <input type="email" class="form-control border w-full p-2 text-gray-900" name="email" required>
+            <label for="password" class="form-label block mt-3 mb-2">パスワード</label>
+            <input type="password" class="form-control border w-full p-2 text-gray-900" name="password" required>
+            <label for="password2" class="form-label block mt-3 mb-2">確認パスワード</label>
+            <input type="password" class="form-control border w-full p-2 text-gray-900" name="password2" required>
+            <button class="btn bg-gray-400 text-white p-2 w-full mt-2 hover:bg-gray-600">登録</button>
+            <p class="para mt-4 text-center">
+                <a href="{% url 'signin' %}" class="text-blue-500"> ログインはこちら</a>
+            </p>
+        </form>
+    </div>
+
+    <script language="text/Javascript">
+        cleared[0] = cleared[1] = cleared[2] = 0; // 各フィールドにクリアフラグを設定
+        function clearField(t) { // 配列を関数外で宣言し、静的かつグローバルにする
+            if (!cleared[t.id]) { // フィールドがまだクリアされていない場合
+                cleared[t.id] = 1; // クリアフラグを1に設定
+                t.value = ''; // フィールドの値をクリア
+                t.style.color = '#fff'; // テキストの色を白に変更
+            }
+        }
+    </script>
+</body>
+
+</html>

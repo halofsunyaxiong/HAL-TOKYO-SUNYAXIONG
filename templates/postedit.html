@@ -1,0 +1,62 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="TemplateMo">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<style>
+
+    body{
+         font-family:"ＭＳ Ｐゴシック",sans-serif;
+   }
+</style>
+<body>
+
+<!-- Header -->
+{%include 'header.html'%}
+
+
+<!-- Page Content -->
+
+
+<div class="container mx-auto">
+    <div class="flex justify-center w-full" style="height: 100%;">
+        <form action="{% url 'editpost' post.id %}" class="w-full p-5" method="post"
+              enctype="multipart/form-data">
+            {% csrf_token %}
+            <h5 class="mb-5 text-2xl font-bold text-center">投稿を更新する</h5>
+            <label for="title" class="form-label block mb-2 font-medium">タイトル</label>
+            <div class="input-group mb-5">
+                <input type="text" id="title"
+                       class="form-control block w-full p-2 border border-gray-300 rounded-md focus:ring focus:ring-orange-300 focus:outline-none"
+                       name="postname" value="{{post.postname}}" required>
+            </div>
+            <label for="content" class="form-label block mb-2 font-medium">内容</label>
+            <textarea id="content"
+                      class="form-control block w-full p-2 border border-gray-300 rounded-md focus:ring focus:ring-orange-300 focus:outline-none"
+                      style="height: 50vh;" name="content" required>{{post.content}}</textarea>
+            <label for="category" class="form-label block mb-2 font-medium">カテゴリ</label>
+            <input type="text" id="category"
+                   class="form-control block w-full p-2 mb-5 border border-gray-300 rounded-md focus:ring focus:ring-orange-300 focus:outline-none"
+                   name="category" value="{{post.category}}" required>
+            <button class="btn bg-gray-300 text-white px-4 py-2 rounded-md hover:bg-gary-400">更新する
+            </button>
+            <br>
+            {% for message in messages %}
+            <p class="text-red-500 mt-2">{{message}}</p>
+            {% endfor %}
+        </form>
+    </div>
+</div>
+
+
+{% include 'footer.html' %}
+
+</body>
+
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <title>ログイン</title>
+</head>
+
+<body>
+    {% include 'header.html' %}
+    <div class="container mx-auto flex justify-center items-center h-screen">
+        <form action="{% url 'signin' %}" method="post" class="p-6 shadow-lg rounded-lg bg-white w-full max-w-md">
+            {% csrf_token %}
+            <h3 class="text-3xl font-bold mb-6 text-center ">ログイン</h3>
+            {% for message in messages %}
+                <p class="text-red-500 text-center mb-4">{{ message }}</p>
+            {% endfor %}
+            <div class="mb-4">
+                <label for="username" class="block text-gray-700 font-semibold mb-2">ユーザー名</label>
+                <div class="input-group border">
+                    <input type="text" class="form-control w-full p-2 text-gray-900" name="username" required>
+                </div>
+            </div>
+            <div class="mb-6">
+                <label for="password" class="block text-gray-700 font-semibold mb-2">パスワード</label>
+                <div class="input-group border">
+                    <input type="password" class="form-control w-full p-2 text-gray-900" name="password" required>
+                </div>
+            </div>
+            <button class="btn bg-gray-300 text-white w-full py-2 rounded hover:bg-gray-600">ログイン</button>
+            <p class="text-center mt-4"> <a href="{% url 'signup' %}" class="text-blue-500 hover:underline">会員登録はこちら</a></p>
+        </form>
+    </div>
+
+    <script language="text/Javascript">
+        cleared[0] = cleared[1] = cleared[2] = 0; // 各フィールドにクリアフラグを設定
+        function clearField(t) { // 配列を関数外で宣言し、静的かつグローバルにする
+            if (!cleared[t.id]) { // フィールドがまだクリアされていない場合
+                cleared[t.id] = 1; // クリアフラグを1に設定
+                t.value = ''; // フィールドの値をクリア
+                t.style.color = '#000'; // テキストの色を黒に変更
+            }
+        }
+    </script>
+</body>
+</html>
